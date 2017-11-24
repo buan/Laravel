@@ -11,4 +11,6 @@ Contents:
 
 Why choose Laravel
 1)Route Handling
-2)
+2)Security
+3)Models and DB migraton
+4)authentication
