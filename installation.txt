@@ -1,0 +1,45 @@
+So I will be developing the laravel app on ubuntu 16.04.
+Installation steps:
+a)Go to the terminal and the location where you want this to be installed.I am installing in  data/html
+
+b)Open terminal and install composer.Paste this.
+php composer-setup.php --install-dir=bin --filename=composer
+
+Link is given below:
+https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
+
+
+c)Once you install composer,paste this
+composer create-project laravel/laravel lsapp
+
+It will take sometime and install laravel.Now go to localhost/lsapp/public.You may get this message
+"Whoops, looks like something went wrong.". Dont worry.
+
+d)Follow these instructions.
+1)Rename .env.example to .env
+
+2)Go to terminal and run this command php
+php artisan key:generate
+
+
+e)now run localhost/lsapp/public. and problem is solved
+
+
+Overview of folder structure of Laravel
+1)app folder=All the models will be under app folder.By default we have user.php
+
+2)Controllers are there in app/http/controllers/controller.php(default).You can create a controller manually..but we will use artisan..as it will include automatically the classes and dependecies
+
+3)There is an auth folder where items based on authentication items like login,register etc
+
+4)Views are there in app/resource/views.By default,there is welcome.blade.php.We use blade template engine
+
+5)Routes=We have routes folder.Inside routes folder,we will get routes defined.For eg, in web.php
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+6) change db connections.
+.env file
+
