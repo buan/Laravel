@@ -1,0 +1,28 @@
+For basic routes,go to routes/web.php
+
+You will see that already a default route is there
+
+1)Route::get('/', function () {
+    return view('welcome');
+});
+
+This means when you set url to slash(/),it will load a view page,whose name is welcome 
+
+You can return normal text also
+
+
+2)Route::get('/hello', function () {
+    return "helloworld";
+});
+
+/hello means it will print hello world
+
+3)Route::get('/hello', function () {
+    return "<h1>helloworld</h1>";
+});
+You can load html also
+
+4)Route::get('/about', function () {
+    return view('pages/about');
+});
+You can load another view.Create a about.blade.php under folder "pages".This page wil get loaded.
