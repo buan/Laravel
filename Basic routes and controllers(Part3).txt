@@ -23,6 +23,108 @@ You can return normal text also
 You can load html also
 
 4)Route::get('/about', function () {
-    return view('pages/about');
+    return view('pages.about');
 });
-You can load another view.Create a about.blade.php under folder "pages".This page wil get loaded.
+You can load another view.Create a about.blade.php under folder "pages".This page will get loaded.
+
+5)Route::get('/hello/{id}/{name}', function ($id,$name) {
+   return ('Your name is '.$name.' with id '.$id);
+});
+You can pass arguments through the routes..Here we are passing id and name
+
+
+Now this is not the ideal way to write code.We should use MVC pattern here.We have routes.This will go to the controller and from controller it will go to the views
+
+
+So first we will create a controller.For creating controller we must use php artisan
+We can manually create the controller,but it will be a long process.
+
+6)Create Controller in cmd
+
+php artisan make:controller PagesController
+
+This means a controller is created under app/HttpControllers/PagesController
+
+You will see something like this
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PagesController extends Controller
+{
+    //
+}
+
+7)Connect routes with controllers
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PagesController extends Controller
+{
+    public function index(){
+        return 'index';
+    }
+}
+
+Here index function is created.We need to access this controller and this index function.
+
+Under web.php
+Route::get('/', 'PagesController@index');
+
+PagesController=>Controller name
+@index=>function name
+
+8)Lets load a view now
+
+ public function index(){
+        return view('pages.index');
+    }
+
+Lets create index.blade.php under pages folder.
+
+<!doctype html>
+<html lang="{{ app()->getLocale() }}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>LSAPP</title>
+    </head>
+    <body>
+       <h1>Welcome To Laravel</h1>
+       <p>This is index page</p>
+    </body>
+</html>
+
+now access /
+
+Do same thing for about page
+Changes
+1)Route::get('/about', 'PagesController@about');
+2)public function about(){
+        return view('pages.about');
+    }
+3)about.blade.php
+  <body>
+       <h1>About</h1>
+       <p>This is about page</p>
+    </body>
+
+Access this via /about
+
+Create services page via this
+/services
+
+
+
+
+
+
+
+
