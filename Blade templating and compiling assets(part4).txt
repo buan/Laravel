@@ -1,0 +1,133 @@
+We will use blade template engine commands here
+
+1)Use of @yield
+
+Let us create a view under folder layouts
+layouts/app.blade.php
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document1</title>
+</head>
+<body>
+    @yield('content')
+</body>
+</html>
+
+Here yield means make this content between body tags available for use in other views.The word yield means that you are allowing the user to extend this template for other views/templates
+
+we will use this in our about page
+
+@extends('layout.app')
+          <body>
+       @section('content')
+       <h1>About</h1>
+       <p>This is about page</p>
+    </body>
+    @endsection
+
+2)@extends allows the page to inherit properties of other pages.In our case its layout/app.blade.php
+
+The portion you want to inherit has to be written under 
+@section
+@endsection
+
+We will do the same for services and index page
+Usually there are 3 @sections:contents,css,javscript
+
+
+3)Pass values to the views.Also pass multiple views
+
+Two ways you can do:
+
+Method1
+============
+1)For about page
+=========================
+ public function about(){
+        $title="About Us";
+        return view('pages.about',compact('title'));
+    }
+
+in about blade page
+====================
+@extends('layout.app')  
+       @section('content')
+       <h1>{{$title}}</h1>
+       <p>This is about page</p>
+    @endsection
+
+=====================
+Method2
+=====================
+2)For index page
+=====================
+public function index(){
+        $title="Index";
+        return view('pages.index')->with('title',$title);
+    }
+
+in index blade page
+=====================
+@extends('layout.app')    
+      @section('content')
+       <h1><?php echo $title?></h1>
+       <p>This is index page</p>
+@endsection
+
+
+3)Pass Multiple Values
+
+======================
+in services page
+======================
+ public function services(){
+        $data=array(
+            "title"=>"Services",
+            "services"=>["web design","programming","seo"]
+        ); 
+        return view('pages.services')->with($data);
+    }
+
+services blade page
+======================
+@extends('layout.app')    
+      @section('content')
+       <h1>{{$title}}</h1>
+       <p>This is {{$title}} page.The {{$title}} are</p>
+    @if(count($services)>0)
+      <ul>
+       @foreach($services as $service)
+          <li>{{$service}}</li>
+       @endforeach
+       </ul>
+    @endif   
+@endsection
+
+
+ASSETS
+==============
+To load css..we have a predefined css
+public/app.css
+
+       <link rel="stylesheet" href="{{asset('css/app.css')}}">
+You need to load like this
+
+Now we have 2 app.css
+a)public/app.css
+b)resources/assets/sass/app.scss
+
+Also we will not directly change in our public/app.css folder, we will change in resources and it will get reflected in public folder
+
+Before that we have to package.json under vendor folder
+we need to install a lot of dependcies from there
+
+lets do npm install
+
+This will install all the dependencies like bootstrap.
+
+After it is installed,we will see node_modules folder being installed.
+
+Lets change css
