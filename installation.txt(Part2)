@@ -32,7 +32,7 @@ Overview of folder structure of Laravel
 
 3)There is an auth folder where items based on authentication items like login,register etc
 
-4)Views are there in app/resource/views.By default,there is welcome.blade.php.We use blade template engine
+4)Views are there in resource/views.By default,there is welcome.blade.php.We use blade template engine
 
 5)Routes=We have routes folder.Inside routes folder,we will get routes defined.For eg, in web.php
 

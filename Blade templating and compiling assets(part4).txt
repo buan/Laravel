@@ -122,7 +122,7 @@ b)resources/assets/sass/app.scss
 Also we will not directly change in our public/app.css folder, we will change in resources and it will get reflected in public folder
 
 Before that we have to package.json under vendor folder
-we need to install a lot of dependcies from there
+we need to install a lot of dependencies from there
 
 lets do npm install
 
@@ -130,4 +130,28 @@ This will install all the dependencies like bootstrap.
 
 After it is installed,we will see node_modules folder being installed.
 
-Lets change css
+Lets change css,now
+
+a)go to routes/sass/_variable.scss...change any css
+====================================
+
+$body-bg: #f5f8fa;
+to
+$body-bg: red;
+
+now go to terminal
+npm run dev
+This command will reload the assets and js and css..Clear cache..you will notice te change
+But instead of running npm dev everytime,we will use npm watch and once you save,it will automatically save them,it will load the assets
+
+b)Add custom stylesheets
+========================
+go to routes/sass and create _custom.scss.Add your css and add the name of the file in app.scss file like this
+
+//Custom
+@import "custom";
+ 
+Reload and you can see the changes
+Make some changes in css.check the result in the index and other pages.Refer to the design    
+
+
