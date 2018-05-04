@@ -142,7 +142,7 @@ $body-bg: red;
 now go to terminal
 npm run dev
 This command will reload the assets and js and css..Clear cache..you will notice te change
-But instead of running npm dev everytime,we will use npm watch and once you save,it will automatically save them,it will load the assets
+But instead of running npm dev everytime,we will use npm run watch and once you save,it will automatically save them,it will load the assets
 
 b)Add custom stylesheets
 ========================
