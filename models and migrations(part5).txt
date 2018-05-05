@@ -1,0 +1,32 @@
+SO here we create another controller
+PostsController.php
+
+We use the same command
+php artisan make:controller PostsController
+
+A file called PostsController.php at app/Http/Controllers
+
+
+We will create a model called PostsController
+php artisan make:model Posts -m
+
+Here the -m denotes migrations. 
+
+Posts.php created under app folder
+and under migrations we will have
+
+2018_05_05_203834_create_posts_table.php created
+
+Under migrations we have 2 functions up and down
+
+up
+======
+public function up()
+    {
+        Schema::create('posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
+    }
+
+    This means that when we will run db migrate it will create a table called posts with columns id and 2timestamps(created at and updated at).Besides this we can add more columns to our model
