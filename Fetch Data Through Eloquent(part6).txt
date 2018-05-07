@@ -1,0 +1,108 @@
+On the previous tuts, we created a controller.PostsController and mapped it with routes
+
+Route::resource('posts','PostsController');
+
+Now we have created a model Posts.php under app.This has only a function which extends model
+
+We can change the table name,column name
+
+ //Tablename
+     protected $table="myposts";
+
+     //PrimaryKey
+     protected $primarKey="id";//you can write item_id..give any name
+
+     //Timestamps
+     public $timestamps=true;//false if you dont want timestamps
+
+     Now,
+     http://localhost/lsapp2/public/posts maps to the index function the PostsController
+
+    Index
+    ========
+    We first need to include a model in the controller
+    use App\Posts;
+
+     Under the PostController /index we have created a new view Posts.index(index.blade.php).We have This
+     
+     return Posts::all();//returns all the posts
+
+     For Posts,we will do this 
+    
+     $posts=Posts::all();
+    return view('posts.index')->with('posts',$posts); 
+
+    In view we will do This
+
+    @section('content')
+    @foreach($posts as $post)
+    <div class="well well-lg"> 
+            <h2><a href="posts/{{$post->id}}"> {{$post->title}}</a> </h2>
+            <small> Created at {{$post->created_at}} </small>
+    </div>
+       
+
+    @endforeach
+
+@endsection
+
+So when you click on each post, you will be redirected to the individual post
+
+Show
+=========
+For individual posts, we will use show function. So, the individual posts will be seen if you click on each post
+
+public function show($id)
+    {
+        // return Posts::find($id);//shows json array of individual post
+        //{"id":1,"title":"Post One","body":"Post One Body","created_at":"2018-05-07 06:19:03","updated_at":"2018-05-07 06:19:03"}
+        return view('posts.show')->with('post',$post);
+        
+    }
+
+    show.blade.php
+    ===============
+    @extends('layouts.app')
+@section('content')
+<a href="../posts">Go Back</a>
+    <div class="well"> 
+            <h2>{{$post->title}}</h2>
+           <div>
+               {{$post->body}}
+           </div>
+           <hr>
+           {{$post->created_at}}
+    </div>
+       
+
+@endsection
+
+Some more operations on index
+=========================
+// $posts=Posts::orderBy('title','desc')->get(); //to fetch posts descending order
+//return Posts::where('title', 'Post One')->get();//get post by where clause
+
+use DB;
+//$posts=DB::select('SELECT * from posts');//use DB query
+
+$posts=Posts::orderBy('title','desc')->take(1)->get();//Limit on SQL
+
+Pagination
+==========
+$posts=Posts::orderBy('title','desc')->paginate(1);
+
+    index.blade.php
+    =============
+@extends('layouts.app')
+@section('content')
+@if($posts)
+    @foreach($posts as $post)
+    <div class="well well-lg"> 
+            <h2><a href="posts/{{$post->id}}"> {{$post->title}}</a> </h2>
+    </div>
+    @endforeach
+    {{$posts->links()}}
+@else
+<div>No Posts Found</div>
+@endif
+@endsection
