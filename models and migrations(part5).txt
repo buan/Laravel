@@ -18,7 +18,7 @@ and under migrations we will have
 2018_05_05_203834_create_posts_table.php created
 
 Under migrations we have 2 functions up and down
-
+database/migrations/
 up
 ======
 public function up()
@@ -29,4 +29,95 @@ public function up()
         });
     }
 
-    This means that when we will run db migrate it will create a table called posts with columns id and 2timestamps(created at and updated at).Besides this we can add more columns to our model
+    This means that when we will run db migrate it will create a table called posts with columns id and 2timestamps(created at and updated at).Besides this we can add more columns to our model.Title and body. So we have this
+
+public function up()
+    {
+        Schema::create('posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->mediumText('body');
+            $table->timestamps();
+        });
+    }
+
+down
+=====
+public function down()
+    {
+        Schema::dropIfExists('posts');
+    }
+
+If we want to reverse the migrations we will drop the posts table
+
+
+
+In laravel, there are already migrations of user and reset passwords. We will use those later
+
+
+Now before we run migrations we need to set up our database connections. Go to the ENV file and edit. I have created a db called lsapp2
+
+
+Go to the console and run php artisan migrate
+4 tables are created.users,posts,password reset and migrations(keep tracks on migrations)
+
+Data
+======
+Initially we need to have some data. But we will not add manually. We will use php tinker to add data to posts
+
+Steps:
+a)App\Posts::count()//to count how many data.Zero initially
+
+b)$post=App\Posts// create a variable
+
+c)$post->title="Post One"//add data to the column title
+
+d)$post->body="Post One Body"//add data to the column body
+
+e)$post->save()//Add the values to the table. 1 new record created
+
+CRUD
+====
+If we want to create a controller having crud operations, we need to fire
+
+ php artisan make:controller PostsController --resource. The --resource command will automatically create all the functions
+ index,store,show,update,create,destroy
+
+For our PostsController we need that. Lets first see the route list by
+php artisan route:list
+
++--------+----------+-------------------+------+-----------------------------------------------+--------------+
+| Domain | Method   | URI               | Name | Action                                        | Middleware   |
++--------+----------+-------------------+------+-----------------------------------------------+--------------+
+|        | GET|HEAD | /                 |      | App\Http\Controllers\PagesController@index    | web          |
+|        | GET|HEAD | about             |      | App\Http\Controllers\PagesController@about    | web          |
+|        | GET|HEAD | api/user          |      | Closure                                       | api,auth:api |
+|        | GET|HEAD | hello             |      | Closure                                       | web          |
+|        | GET|HEAD | services          |      | App\Http\Controllers\PagesController@services | web          |
+|        | GET|HEAD | users/{id}/{name} |      | Closure                                       | web          |
++--------+----------+-------------------+------+-----------------------------------------------+--------------+
+
+	
+Now for each crud operation, we will not create all the functions one by one. We will do like this
+Route::resource('posts','PostsController');//posts means the route /post which points to our PostsController. Now the routes are connected
+
+
++--------+-----------+-------------------+---------------+-----------------------------------------------+--------------+
+| Domain | Method    | URI               | Name          | Action                                        | Middleware   |
++--------+-----------+-------------------+---------------+-----------------------------------------------+--------------+
+|        | GET|HEAD  | /                 |               | App\Http\Controllers\PagesController@index    | web          |
+|        | GET|HEAD  | about             |               | App\Http\Controllers\PagesController@about    | web          |
+|        | GET|HEAD  | api/user          |               | Closure                                       | api,auth:api |
+|        | GET|HEAD  | hello             |               | Closure                                       | web          |
+|        | GET|HEAD  | posts             | posts.index   | App\Http\Controllers\PostsController@index    | web          |
+|        | POST      | posts             | posts.store   | App\Http\Controllers\PostsController@store    | web          |
+|        | GET|HEAD  | posts/create      | posts.create  | App\Http\Controllers\PostsController@create   | web          |
+|        | GET|HEAD  | posts/{post}      | posts.show    | App\Http\Controllers\PostsController@show     | web          |
+|        | PUT|PATCH | posts/{post}      | posts.update  | App\Http\Controllers\PostsController@update   | web          |
+|        | DELETE    | posts/{post}      | posts.destroy | App\Http\Controllers\PostsController@destroy  | web          |
+|        | GET|HEAD  | posts/{post}/edit | posts.edit    | App\Http\Controllers\PostsController@edit     | web          |
+|        | GET|HEAD  | services          |               | App\Http\Controllers\PagesController@services | web          |
+|        | GET|HEAD  | users/{id}/{name} |               | Closure                                       | web          |
++--------+-----------+-------------------+---------------+-----------------------------------------------+--------------+
+
+
