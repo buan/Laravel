@@ -91,3 +91,25 @@ Add data
         $posts->save();
 
         return redirect('/posts')->with('success','Post Created');
+
+Add link for create post in navbar
+=========================
+<ul class="nav navbar-nav navbar-right">
+            <li><a href="../posts/create">Create Post</a></li>
+</ul>
+
+Implement CKeditor
+=================
+Steps
+a)Go to https://github.com/UniSharp/laravel-ckeditor. Follow installation steps
+b)Add <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'article-ckeditor' );
+    </script>
+    to our layouts
+c)We will add it into our body(textarea).   {{ Form::textarea('body','',['id' => 'article-ckeditor', 'class' => 'form-control'])}}
+d)If you add some text now, it will show in the HTML format. We need to parse it.
+To Parse body we will do this
+{{ $post->body }}
+TO
+{!! $post->body !!}

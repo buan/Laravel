@@ -1,0 +1,74 @@
+Edit Post
+========
+We will create an edit page
+
+posts/edit.blade.php
+
+@extends('layouts.app')
+@section('content')
+<h1>Edit Post</h1>
+
+{!! Form::open(['action' => ['PostsController@update',$post->id],'method' => 'POST']) !!}
+       <div class="form-group">
+            {{Form::label('title', 'Title')}}
+            {{ Form::text('title',$post->title,['class' => 'form-control'])}}
+       </div>
+
+       <div class="form-group">
+            {{Form::label('body', 'Body')}}
+            {{ Form::textarea('body',$post->body,['id' => 'article-ckeditor', 'class' => 'form-control'])}}
+       </div>
+            {{Form::hidden('_method','PUT')}}
+       <div class="form-group">
+            {{Form::submit('Submit',['class' => 'btn btn-primary'])}}
+       </div>
+{!! Form::close() !!}
+@endsection
+
+PostsController
+===========
+public function edit($id)
+    {
+        //
+        $post= Posts::find($id);
+        
+        return view('posts.edit')->with('post',$post);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request,[
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+       
+
+        //Update New Post
+        $post= Posts::find($id);
+        $post->title=$request->input('title');
+        $post->body=$request->input('body');
+
+        $post->save();
+
+        return redirect('/posts')->with('success','Post Updated');
+    }
+
+    Delete Posts
+    ============
+    Add button to the show.blade.php and it points to the destroy method
+
+      {!! Form::open(['action' => ['PostsController@destroy',$post->id],'method' => 'POST']) !!}
+            {{Form::hidden('_method','DELETE')}}
+            {{Form::submit('Delete',['class' => 'btn btn-primary pull-right'])}}
+    {!! Form::close() !!}
+
+
+    public function destroy($id)
+    {
+        //
+        $post=Posts::find($id);
+        $post->delete();
+        return redirect('/posts')->with('success','Post Removed'); ;
+    }
+}
+
